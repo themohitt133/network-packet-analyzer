@@ -1,0 +1,21 @@
+# Vim swap files
+*.swp
+*.swo
+*.swn
+
+# Temporary files
+*.tmp
+*.temp
+*~
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Editor folders
+.vscode/
+.idea/
+
+# Python cache
+__pycache__/
+*.pyc

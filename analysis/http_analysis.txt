@@ -1,0 +1,125 @@
+Network & Packet Analyzer
+HTTP Traffic Analysis Report
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - -   1. Capture Overview  - - - - - - - - - - - - - -- - - - - - - - - - - - - - - - - - - - - - -
+
+Tool:
+Wireshark
+
+Traffic Type:
+Controlled local HTTP traffic
+
+Capture File:
+capture/sample_capture.pcapng
+
+Purpose:
+Analyze HTTP requests and idetify potentially suspicious request patterns.
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - -  2. HTTP Traffic Observed - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+Observed HTTP methods:
+GET
+
+Observed request paths:
+
+/
+ /index.html
+ /not-found
+ /.env
+
+Observed response behavior:
+
+200 OK
+404 Not Found
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - 3. Normal Request Analysis - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+The following requests were generated as normal resource requests:
+
+GET /
+GET /index.html
+
+These requests successfully accessed resources provided by the controlled local HTTP server.
+
+- - - - - - - - - - - - - - - - - - - - - - - - - -  4. Failed Request Analysis  - - - - - - - - - - - - - - - - - - - - - - - - -- - - - - - - - - -  -
+
+Request:
+
+GET /not-found
+
+Observation:
+
+The requested resource did not exist on the test server and resulted in an HTTP 404 response.
+
+Purpose:
+
+This request was used to demonstrate how failed HTTP requests can be identified during packet analysis.
+
+- - - - - - - - - - - - - - - - - - - - - - - - - -  5. Suspicious Request Analysis - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+Request:
+
+GET /.env
+
+Observation:
+
+A request was made for a commonly sensitive configuration-file path.
+
+Why it is noteworthy:
+
+Requests for sensitive configuration paths can be associated with reconnaissance or attempted information discovery.
+
+Assessment:
+
+Suspicious / investigation-worthy indicator.
+
+The request alone does not prove malicious intent or compromise.
+
+- - - - - - - - - - - - - - - - - - - - - - - - -  6. Repeated Request Analysis  - - - - - - -   - - - - - - - - - - - - - - - - - - - 
+
+Multiple requests were generated for:
+
+GET /.env
+
+Observation:
+
+Repeated requests for the same sensitive-looking path were observed from the controlled test source.
+
+Assessment:
+
+The repeated pattern increases the need for investigation, but it does not independently prove malicious activity.
+
+- - - - - - - - - - - - - - - - - - - - - - - - -  7. Packet Information Reviewed - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+The following information was reviewed during packet analysis:
+
+- Source address
+- Destination address
+- HTTP request method
+- HTTP request URI
+- Host information 
+- User-Agent information
+- Packet timestamp
+
+- - - - - - - - - - - - - - - - - - - - - - - - - 8. Tools Used - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -
+
+Wireshark
+Python HTTP Server
+curl
+Linux terminal
+
+- - - - - - - - - - - - - - - - - - - - - - - - - 9. Limitations - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+Traffic used in this project was generated in a controlled local test environment .
+
+Packet-level observation alone does not establish malicious intent.
+
+Additional context such as web server logs, application logs, endpoint information, DNS data, and authentication logs may be required for a definitive security assessment.
+
+- - - - - - - - - - - - - - - - - - - - - - - - -  10. Conclusion  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+The project demonstrated how Wireshark can be used to capture and analyze network traffic, isolate HTTP packet, inspect HTTP requests, identify failed requests, and detect suspicious request patterns.
+
+The controlled /.env request demonstrated how a potentially senstive resource-probing indicator can be identified and documented without assuming malicious
+intent from a single request.  
